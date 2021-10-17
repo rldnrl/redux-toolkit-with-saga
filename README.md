@@ -1,4 +1,4 @@
-# Vite + Redux-Toolkit + TypeScript Starter
+# Redux-Toolkit-with-Saga
 
 ## Install Package
 
