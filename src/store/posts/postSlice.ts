@@ -2,12 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 import { Post } from "../../api/post";
 
-export const FETCH_POSTS = {
-  REQUEST: "FETCH_REQUEST",
-  SUCCESS: "FETCH_SUCCESS",
-  FAILURE: "FETCH_FAILURE",
-};
-
 type State = {
   loading: boolean;
   posts: Post[];
@@ -26,25 +20,21 @@ const postSlice = createSlice({
   name,
   initialState,
   reducers: {
-    [FETCH_POSTS.REQUEST]: (state) => {
+    FETCH_REQUEST: (state) => {
       state.loading = true;
     },
-    [FETCH_POSTS.SUCCESS]: (
-      state,
-      action: PayloadAction<{ posts: Post[] }>
-    ) => {
+    FETCH_SUCCESS: (state, action: PayloadAction<{ posts: Post[] }>) => {
       state.posts = action.payload.posts;
       state.loading = false;
     },
-    [FETCH_POSTS.FAILURE]: (
-      state,
-      action: PayloadAction<{ error: any }>
-    ) => {
+    FETCH_FAILURE: (state, action: PayloadAction<{ error: any }>) => {
       state.error = action.payload.error;
       state.loading = false;
     },
   },
 });
+
+export const postActions = postSlice.actions;
 
 export default postSlice.reducer;
 

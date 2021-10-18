@@ -1,24 +1,18 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import { fetchPosts, Post } from "../../api/post";
-import { FETCH_POSTS } from "./postSlice";
-
-const prefix = "POST";
+import { postActions } from "./postSlice";
 
 function* getPostsWorker() {
+  const { FETCH_SUCCESS, FETCH_FAILURE } = postActions;
   try {
-    const posts: Promise<Post[]> = yield call(fetchPosts);
-    yield put({
-      type: `${prefix}/${FETCH_POSTS.SUCCESS}`,
-      payload: { posts: posts },
-    });
+    const posts: Post[] = yield call(fetchPosts);
+    yield put(FETCH_SUCCESS({ posts }));
   } catch (e: any) {
-    yield put({
-      type: `${prefix}/${FETCH_POSTS.FAILURE}`,
-      payload: { message: e.message },
-    });
+    yield put(FETCH_FAILURE({ error: e.message }));
   }
 }
 
 export default function* getPostsWatcher() {
-  yield takeEvery(`${prefix}/${FETCH_POSTS.REQUEST}`, getPostsWorker);
+  const { FETCH_REQUEST } = postActions;
+  yield takeEvery(FETCH_REQUEST, getPostsWorker);
 }
