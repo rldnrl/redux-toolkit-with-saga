@@ -1,22 +1,18 @@
 import { takeEvery, call, put } from "redux-saga/effects";
-import { Employees, fetchEmployees } from "../../api/employee";
-import { FETCH_EMPLOYEES } from "./employeeSlice";
+import { Employee, fetchEmployees } from "../../api/employee";
+import { employeeActions } from "./employeeSlice";
 
 function* getEmployeeWorker() {
+  const { FETCH_SUCCESS, FETCH_FAILURE } = employeeActions;
   try {
-    const employees: Promise<Employees> = yield call(fetchEmployees);
-    yield put({
-      type: `EMPLOYEE/${FETCH_EMPLOYEES.SUCCESS}`,
-      payload: { employees: employees },
-    });
+    const employees: Employee[] = yield call(fetchEmployees);
+    yield put(FETCH_SUCCESS({ employees }));
   } catch (e: any) {
-    yield put({
-      type: `EMPLOYEE/${FETCH_EMPLOYEES.FAILURE}`,
-      payload: { message: e.message },
-    });
+    yield put(FETCH_FAILURE({ error: e.message }));
   }
 }
 
 export default function* getEmployeeWatcher() {
-  yield takeEvery(`EMPLOYEE/${FETCH_EMPLOYEES.REQUEST}`, getEmployeeWorker);
+  const { FETCH_REQUEST } = employeeActions;
+  yield takeEvery(FETCH_REQUEST, getEmployeeWorker);
 }

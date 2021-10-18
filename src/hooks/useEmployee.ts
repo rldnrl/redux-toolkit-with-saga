@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import {
-  FETCH_EMPLOYEES,
   selectEmployee,
+  employeeActions,
 } from "../store/employee/employeeSlice";
 import { useAppDispatch, useAppSelector } from "../store/hook";
 
@@ -10,7 +10,7 @@ const useEmployee = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch({ type: `EMPLOYEE/${FETCH_EMPLOYEES.REQUEST}` });
+    dispatch(employeeActions.FETCH_REQUEST());
   }, [dispatch]);
 
   return {

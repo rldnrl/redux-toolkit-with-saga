@@ -1,15 +1,6 @@
-import {
-  createSlice,
-  PayloadAction,
-} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 import { Employee } from "../../api/employee";
-
-export const FETCH_EMPLOYEES = {
-  REQUEST: "FETCH_REQUEST",
-  SUCCESS: "FETCH_SUCCESS",
-  FAILURE: "FETCH_FAILURE",
-};
 
 type State = {
   loading: boolean;
@@ -28,25 +19,24 @@ const employeeSlice = createSlice({
   name,
   initialState,
   reducers: {
-    [FETCH_EMPLOYEES.REQUEST]: (state) => {
+    FETCH_REQUEST: (state) => {
       state.loading = true;
     },
-    [FETCH_EMPLOYEES.SUCCESS]: (
+    FETCH_SUCCESS: (
       state,
       action: PayloadAction<{ employees: Employee[] }>
     ) => {
       state.loading = false;
       state.employees = action.payload.employees;
     },
-    [FETCH_EMPLOYEES.FAILURE]: (
-      state,
-      action: PayloadAction<{ error: any }>
-    ) => {
+    FETCH_FAILURE: (state, action: PayloadAction<{ error: any }>) => {
       state.loading = false;
       state.error = action.payload.error;
     },
   },
 });
+
+export const employeeActions = employeeSlice.actions;
 
 export default employeeSlice.reducer;
 
