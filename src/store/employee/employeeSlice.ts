@@ -1,4 +1,8 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  SliceCaseReducers,
+} from "@reduxjs/toolkit";
 import { RootState } from "..";
 import { Employee } from "../../api/employee";
 
@@ -14,26 +18,26 @@ const initialState = {
   error: null,
 } as State;
 
+const reducers: SliceCaseReducers<State> = {
+  FETCH_REQUEST: (state) => {
+    state.loading = true;
+  },
+  FETCH_SUCCESS: (state, action: PayloadAction<{ employees: Employee[] }>) => {
+    state.loading = false;
+    state.employees = action.payload.employees;
+  },
+  FETCH_FAILURE: (state, action: PayloadAction<{ error: any }>) => {
+    state.loading = false;
+    state.error = action.payload.error;
+  },
+};
+
 const name = "EMPLOYEE";
+
 const employeeSlice = createSlice({
   name,
   initialState,
-  reducers: {
-    FETCH_REQUEST: (state) => {
-      state.loading = true;
-    },
-    FETCH_SUCCESS: (
-      state,
-      action: PayloadAction<{ employees: Employee[] }>
-    ) => {
-      state.loading = false;
-      state.employees = action.payload.employees;
-    },
-    FETCH_FAILURE: (state, action: PayloadAction<{ error: any }>) => {
-      state.loading = false;
-      state.error = action.payload.error;
-    },
-  },
+  reducers,
 });
 
 export const employeeActions = employeeSlice.actions;

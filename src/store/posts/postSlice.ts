@@ -1,4 +1,8 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  SliceCaseReducers,
+} from "@reduxjs/toolkit";
 import { RootState } from "..";
 import { Post } from "../../api/post";
 
@@ -14,24 +18,26 @@ const initialState = {
   error: null,
 } as State;
 
+const reducers: SliceCaseReducers<State> = {
+  FETCH_REQUEST: (state) => {
+    state.loading = true;
+  },
+  FETCH_SUCCESS: (state, action: PayloadAction<{ posts: Post[] }>) => {
+    state.posts = action.payload.posts;
+    state.loading = false;
+  },
+  FETCH_FAILURE: (state, action: PayloadAction<{ error: any }>) => {
+    state.error = action.payload.error;
+    state.loading = false;
+  },
+};
+
 const name = "POST";
 
 const postSlice = createSlice({
   name,
   initialState,
-  reducers: {
-    FETCH_REQUEST: (state) => {
-      state.loading = true;
-    },
-    FETCH_SUCCESS: (state, action: PayloadAction<{ posts: Post[] }>) => {
-      state.posts = action.payload.posts;
-      state.loading = false;
-    },
-    FETCH_FAILURE: (state, action: PayloadAction<{ error: any }>) => {
-      state.error = action.payload.error;
-      state.loading = false;
-    },
-  },
+  reducers,
 });
 
 export const postActions = postSlice.actions;
