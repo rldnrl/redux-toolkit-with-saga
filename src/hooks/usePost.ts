@@ -3,11 +3,13 @@ import { useAppDispatch, useAppSelector } from "../store/hook";
 import { postActions, selectPosts } from "../store/posts/postSlice";
 
 const usePost = () => {
-  const { loading, posts, error } = useAppSelector(selectPosts);
+  const { loading, data: posts, error } = useAppSelector(selectPosts);
   const dispatch = useAppDispatch();
 
+  const { FETCH_REQUEST } = postActions;
+
   useEffect(() => {
-    dispatch(postActions.FETCH_REQUEST());
+    dispatch(FETCH_REQUEST());
   }, [dispatch]);
 
   return {

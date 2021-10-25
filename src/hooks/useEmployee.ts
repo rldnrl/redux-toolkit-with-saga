@@ -9,8 +9,10 @@ const useEmployee = () => {
   const { loading, employees, error } = useAppSelector(selectEmployee);
   const dispatch = useAppDispatch();
 
+  const { FETCH_REQUEST } = employeeActions;
+
   useEffect(() => {
-    dispatch(employeeActions.FETCH_REQUEST());
+    dispatch(FETCH_REQUEST());
   }, [dispatch]);
 
   return {
