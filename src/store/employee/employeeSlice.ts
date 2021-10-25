@@ -12,24 +12,10 @@ type State = {
   error: string | null;
 };
 
-const initialState = {
+const initialState: State = {
   loading: false,
   employees: [],
   error: null,
-} as State;
-
-const reducers: SliceCaseReducers<State> = {
-  FETCH_REQUEST: (state) => {
-    state.loading = true;
-  },
-  FETCH_SUCCESS: (state, action: PayloadAction<{ employees: Employee[] }>) => {
-    state.loading = false;
-    state.employees = action.payload.employees;
-  },
-  FETCH_FAILURE: (state, action: PayloadAction<{ error: any }>) => {
-    state.loading = false;
-    state.error = action.payload.error;
-  },
 };
 
 const name = "EMPLOYEE";
@@ -37,7 +23,22 @@ const name = "EMPLOYEE";
 const employeeSlice = createSlice({
   name,
   initialState,
-  reducers,
+  reducers: {
+    FETCH_REQUEST: (state) => {
+      state.loading = true;
+    },
+    FETCH_SUCCESS: (
+      state,
+      action: PayloadAction<{ employees: Employee[] }>
+    ) => {
+      state.loading = false;
+      state.employees = action.payload.employees;
+    },
+    FETCH_FAILURE: (state, action: PayloadAction<{ error: any }>) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+  },
 });
 
 export const employeeActions = employeeSlice.actions;

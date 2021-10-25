@@ -1,44 +1,21 @@
-import {
-  createSlice,
-  PayloadAction,
-  SliceCaseReducers,
-} from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 import { RootState } from "..";
 import { Post } from "../../api/post";
+import createFetchSlice from "../../utils/createFetchSlice";
 
 type State = {
   loading: boolean;
-  posts: Post[];
-  error: string | null;
+  data: Post[];
+  error: AxiosError | null;
 };
 
 const initialState = {
   loading: false,
-  posts: [],
+  data: [],
   error: null,
 } as State;
 
-const reducers: SliceCaseReducers<State> = {
-  FETCH_REQUEST: (state) => {
-    state.loading = true;
-  },
-  FETCH_SUCCESS: (state, action: PayloadAction<{ posts: Post[] }>) => {
-    state.posts = action.payload.posts;
-    state.loading = false;
-  },
-  FETCH_FAILURE: (state, action: PayloadAction<{ error: any }>) => {
-    state.error = action.payload.error;
-    state.loading = false;
-  },
-};
-
-const name = "POST";
-
-const postSlice = createSlice({
-  name,
-  initialState,
-  reducers,
-});
+const postSlice = createFetchSlice<Post, State>("POST", initialState);
 
 export const postActions = postSlice.actions;
 
