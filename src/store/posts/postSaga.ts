@@ -6,7 +6,7 @@ function* getPostsWorker() {
   const { FETCH_SUCCESS, FETCH_FAILURE } = postActions;
   try {
     const posts: Post[] = yield call(fetchPosts);
-    yield put(FETCH_SUCCESS({ posts }));
+    yield put(FETCH_SUCCESS({ data: posts }));
   } catch (e: any) {
     yield put(FETCH_FAILURE({ error: e.message }));
   }
