@@ -6,7 +6,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../store/hook";
 
 const useEmployee = () => {
-  const { loading, employees, error } = useAppSelector(selectEmployee);
+  const { loading, data: employees, error } = useAppSelector(selectEmployee);
   const dispatch = useAppDispatch();
 
   const { FETCH_REQUEST } = employeeActions;

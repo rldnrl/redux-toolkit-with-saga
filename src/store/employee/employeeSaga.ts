@@ -6,7 +6,7 @@ function* getEmployeeWorker() {
   const { FETCH_SUCCESS, FETCH_FAILURE } = employeeActions;
   try {
     const employees: Employee[] = yield call(fetchEmployees);
-    yield put(FETCH_SUCCESS({ employees }));
+    yield put(FETCH_SUCCESS({ data: employees }));
   } catch (e: any) {
     yield put(FETCH_FAILURE({ error: e.message }));
   }

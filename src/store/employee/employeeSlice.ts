@@ -3,43 +3,27 @@ import {
   PayloadAction,
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
+import { Axios, AxiosError } from "axios";
 import { RootState } from "..";
 import { Employee } from "../../api/employee";
+import createFetchSlice from "../../utils/createFetchSlice";
 
 type State = {
   loading: boolean;
-  employees: Employee[];
-  error: string | null;
+  data: Employee[];
+  error: AxiosError | null;
 };
 
 const initialState: State = {
   loading: false,
-  employees: [],
+  data: [],
   error: null,
 };
 
-const name = "EMPLOYEE";
-
-const employeeSlice = createSlice({
-  name,
-  initialState,
-  reducers: {
-    FETCH_REQUEST: (state) => {
-      state.loading = true;
-    },
-    FETCH_SUCCESS: (
-      state,
-      action: PayloadAction<{ employees: Employee[] }>
-    ) => {
-      state.loading = false;
-      state.employees = action.payload.employees;
-    },
-    FETCH_FAILURE: (state, action: PayloadAction<{ error: any }>) => {
-      state.loading = false;
-      state.error = action.payload.error;
-    },
-  },
-});
+const employeeSlice = createFetchSlice<Employee, State>(
+  "EMPLOYEE",
+  initialState
+);
 
 export const employeeActions = employeeSlice.actions;
 
